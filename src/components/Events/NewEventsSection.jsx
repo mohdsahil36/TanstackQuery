@@ -7,8 +7,8 @@ import { fetchEvents } from '../../util/http.js';
 
 export default function NewEventsSection() {
   const {data,isLoading, isError,error}=useQuery({
-    queryKey:['events'], // we need to have key so that the data can be stored as cache and reused if called again
-    queryFn:fetchEvents, //here the usequery hook is sending HTTP request from the function defined in the other file
+    queryKey:['events',{max:3}], // we need to have key so that the data can be stored as cache and reused if called again
+    queryFn:({signal,queryKey})=>fetchEvents({signal,...queryKey[1]}), //here the usequery hook is sending HTTP request from the function defined in the other file
     staleTime:5000, //this is the time after which react query will send a request behind the scenes to check if there is any updated data present in the cache
     // gcTime:25000 // this is the garbage collection time after which the cache data will be cleared from the memory
   });
